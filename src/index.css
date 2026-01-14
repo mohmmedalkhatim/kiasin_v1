@@ -1,1 +1,80 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+
+@layer components{
+    body{
+        background: var(--color-dark-900);
+    }
+    *{
+        @apply text-support-100
+    }
+    .app_container {
+        @apply absolute pl-19 pt-10 w-[calc(100%)] h-[calc(100%-2.5rem)] overflow-x-hidden;
+        scrollbar-gutter: left
+    }
+    .btn {
+        @apply px-4 py-2 rounded-md text-white font-medium transition;
+        background-color: var(--color-primary-600);
+    }
+    .btn:hover {
+        background-color: var(--color-primary-700);
+    }
+}
+
+@theme {
+    /* =========================         Primary (Blue Brand)
+         ========================= */
+    --color-primary-50: #e4f8ff;
+    --color-primary-100: #d4ebfb;
+    --color-primary-200: #acd3ee;
+    --color-primary-300: #82bae1;
+    --color-primary-400: #5ea5d7;
+    --color-primary-500: #4798d1;
+    --color-primary-600: #3791cf;
+    --color-primary-700: #257eb8;
+    --color-primary-800: #1670a6;
+    --color-primary-900: #006194;
+    /* =========================
+     Dark (Night / Slate)
+     ========================= */
+    --color-dark-50: #f5f5f5;
+    --color-dark-100: #e2e2e2;
+    --color-dark-200: #cdcdcd;
+    --color-dark-300: #b2b2b2;
+    --color-dark-400: #9a9a9a;
+    --color-dark-500: #8b8b8b;
+    --color-dark-600: #848484;
+    --color-dark-700: #717171;
+    --color-dark-800: #656565;
+    --color-dark-900: #191919;
+    /* =========================
+    --color-     Support / Neutral (Gray)
+    --color-     ========================= */
+    --color-support-50: #f7f7f7;
+    --color-support-100: #e7e7e7;
+    --color-support-200: #cdcdcd;
+    --color-support-300: #b2b2b2;
+    --color-support-400: #9a9a9a;
+    --color-support-500: #8b8b8b;
+    --color-support-600: #848484;
+    --color-support-700: #717171;
+    --color-support-800: #656565;
+    --color-support-900: #575757;
+
+    
+    /* =========================
+     waring (red / danger)
+     ========================= */
+    --color-danger-50: #ffeaec;
+    --color-danger-100: #fcd4d7;
+    --color-danger-200: #f4a7ac;
+    --color-danger-300: #ec777e;
+    --color-danger-400: #e64f57;
+    --color-danger-500: #e3353f;
+    --color-danger-600: #e22732;
+    --color-danger-700: #c91a25;
+    --color-danger-800: #b41220;
+    --color-danger-900: #9e0419;
+
+    --color-border-main: #e2e2e220
+}
