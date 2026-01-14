@@ -1,120 +1,283 @@
-/* DraggableHeader.css */
+@import 'tailwindcss';
+@import '../../index.css';
 
-.draggable-header {
-  --header-height: 32px;
-  --button-width: 46px;
-  --header-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --header-color: white;
-  --button-hover-bg: rgba(255, 255, 255, 0.1);
-  --close-hover-bg: #e81123;
-  --transition-speed: 0.2s;
-  
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: var(--header-height);
-  background: var(--header-bg);
-  color: var(--header-color);
-  user-select: none;
-  -webkit-app-region: no-drag; /* CHANGED: Header container should NOT be draggable */
-  padding: 0 8px;
-  position: relative;
-  z-index: 10000;
-}
+@layer components {
 
-/* Draggable area - ONLY this area is draggable */
-.draggable-header__area {
-  flex: 1;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  padding-left: 12px;
-  -webkit-app-region: drag; /* ONLY this element is draggable */
-  cursor: move;
-}
-
-.draggable-header__title {
-  font-size: 14px;
-  font-weight: 500;
-  opacity: 0.9;
-  letter-spacing: 0.3px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-app-region: drag; /* Text should also be draggable */
-}
-
-/* Controls container - MUST NOT be draggable */
-.draggable-header__controls {
-  display: flex;
-  gap: 2px;
-  -webkit-app-region: no-drag; /* Explicitly not draggable */
-}
-
-/* Base button styles */
-.draggable-header__button {
-  width: var(--button-width);
-  height: 100%;
-  background: transparent;
-  border: none;
-  color: rgba(255, 255, 255, 0.8);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all var(--transition-speed) ease;
-  -webkit-app-region: no-drag; /* CRITICAL: Buttons must not be draggable */
-  padding: 0;
-  margin: 0;
-  outline: none;
-}
-
-/* Fix for hover states */
-.draggable-header__button:hover {
-  background-color: var(--button-hover-bg);
-  color: white;
-}
-
-.draggable-header__button:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.5);
-  outline-offset: -2px;
-}
-
-/* Button variants */
-.draggable-header__button--minimize:hover {
-  background-color: rgba(255, 255, 255, 0.15);
-}
-
-.draggable-header__button--maximize:hover {
-  background-color: rgba(255, 255, 255, 0.15);
-}
-
-.draggable-header__button--close:hover {
-  background-color: var(--close-hover-bg);
-}
-
-/* Icon styles */
-.draggable-header__button svg {
-  pointer-events: none; /* Allow clicks to pass to button */
-}
-
-/* Optional: Add visual feedback when dragging */
-.draggable-header__area:active {
-  opacity: 0.9;
-}
-
-/* Make sure buttons work on touch devices */
-@media (hover: none) and (pointer: coarse) {
-  .draggable-header__button {
-    min-width: 44px; /* Minimum touch target size */
-    min-height: 44px;
-  }
-}
-
-/* Dark theme */
-@media (prefers-color-scheme: dark) {
   .draggable-header {
-    --header-bg: #1a1a1a;
-    --header-color: #f0f0f0;
+    --header-height: 40px;
+    --button-width: 48px;
+    --transition-speed: 0.2s;
+    --border-radius: 8px 8px 0 0;
+    @apply bg-support-400 dark:bg-dark-900 text-support-900 dark:text-support-100;
+    padding: 0;;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: var(--header-height);
+    user-select: none;
+    -webkit-app-region: no-drag;
+    
+    position: relative;
+    z-index: 10000;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 1px 3px var(--shadow-color);
+    font-family: system-ui, -apple-system, sans-serif;
   }
+
+  /* Variant: Solid Background */
+  .draggable-header--solid {
+    --header-bg: var(--header-bg-solid);
+    background: var(--header-bg-solid);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  /* Variant: Transparent */
+  .draggable-header--transparent {
+    --header-bg: transparent;
+    background: transparent;
+    border-bottom: 1px solid var(--border-color);
+    backdrop-filter: blur(10px);
+  }
+
+  /* Variant: Bordered */
+  .draggable-header--bordered {
+    border: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 4px 12px var(--shadow-color);
+  }
+
+  /* Draggable area */
+  .draggable-header__area {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 16px;
+    -webkit-app-region: drag;
+    cursor: move;
+    gap: 12px;
+  }
+
+  .draggable-header__icon {
+    width: 20px;
+    height: 20px;
+    color: currentColor;
+    opacity: 0.8;
+  }
+
+  .draggable-header__title {
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0.95;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-app-region: drag;
+  }
+
+  /* Controls container */
+  .draggable-header__controls {
+    display: flex;
+    gap: 4px;
+    height: 100%;
+    -webkit-app-region: no-drag;
+  }
+
+  /* Base button styles */
+  .draggable-header__button {
+    width: var(--button-width);
+    height: 100%;
+    background: transparent;
+    border: none;
+    color: var(--header-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    -webkit-app-region: no-drag;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    position: relative;
+    opacity: 0.8;
+  }
+
+  .draggable-header__button:hover {
+    background-color: var(--color-dark-50-bg);
+    color: var(--header-color);
+    opacity: 1;
+  }
+
+  .draggable-header__button:active {
+    background-color: var(--button-active-bg);
+    transform: translateY(1px);
+  }
+
+  .draggable-header__button:focus-visible {
+    outline: 2px solid var(--color-sky-400);
+    outline-offset: -2px;
+  }
+
+  /* Button variants */
+  .draggable-header__button--minimize:hover {
+    background-color: color-mix(in srgb, var(--color-dark-100) 20%, transparent);
+
+  }
+
+  .draggable-header__button--maximize:hover {
+    background-color: color-mix(in srgb, var(--color-dark-100) 20%, transparent);
+
+  }
+
+  .draggable-header__button--close:hover {
+    background-color: color-mix(in srgb, var(--color-red-600) 90%, transparent);
+    color: white;
+  }
+
+  /* Icon styles */
+  .draggable-header__button svg {
+    pointer-events: none;
+    transition: transform var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .draggable-header__button:active svg {
+    transform: scale(0.95);
+  }
+
+  /* Visual feedback when dragging */
+  .draggable-header__area:active {
+    opacity: 0.9;
+  }
+
+  /* MacOS style variant */
+  .draggable-header--mac {
+    --button-width: 12px;
+    padding: 0 16px;
+    justify-content: flex-start;
+    gap: 12px;
+    border-radius: 12px 12px 0 0;
+    background: var(--header-bg-solid);
+    border: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .draggable-header--mac .draggable-header__area {
+    padding-left: 0;
+    flex: unset;
+    margin-left: auto;
+  }
+
+  .draggable-header--mac .draggable-header__controls {
+    margin-left: 0;
+    gap: 8px;
+  }
+
+  .draggable-header--mac .draggable-header__button {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    padding: 0;
+    border: 0.5px solid color-mix(in oklch, currentColor 20%, transparent);
+  }
+
+  .draggable-header--mac .draggable-header__button--close {
+    background-color: #ff5f57;
+    color: #ff5f57;
+  }
+
+  .draggable-header--mac .draggable-header__button--minimize {
+    background-color: #ffbd2e;
+    color: #ffbd2e;
+  }
+
+  .draggable-header--mac .draggable-header__button--maximize {
+    background-color: #28ca42;
+    color: #28ca42;
+  }
+
+  .draggable-header--mac .draggable-header__button:hover {
+    filter: brightness(1.2);
+    transform: scale(1.1);
+  }
+
+  /* Windows 11 style */
+  .draggable-header--win11 {
+    --header-height: 48px;
+    --button-width: 52px;
+    border-radius: 8px 8px 0 0;
+    background: var(--header-bg-solid);
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .draggable-header--win11 .draggable-header__title {
+    font-size: 13px;
+    font-weight: 400;
+    opacity: 0.9;
+  }
+
+  .draggable-header--win11 .draggable-header__button {
+    border-radius: 4px;
+  }
+
+  /* Theme-aware adjustments */
+  @media (prefers-color-scheme: light) {
+    .draggable-header:not(.draggable-header--mac):not(.draggable-header--win11) {
+      --header-bg: linear-gradient(135deg, var(--color-sky-400) 0%, var(--color-sky-600) 100%);
+      --header-bg-solid: var(--color-sky-500);
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .draggable-header:not(.draggable-header--mac):not(.draggable-header--win11) {
+      --header-bg: linear-gradient(135deg, var(--color-sky-800) 0%, var(--color-sky-900) 100%);
+      --header-bg-solid: var(--color-sky-800);
+    }
+  }
+
+  /* Touch device optimizations */
+  @media (hover: none) and (pointer: coarse) {
+    .draggable-header__button {
+      min-width: 48px;
+      min-height: 48px;
+    }
+
+    .draggable-header__area {
+      min-height: 48px;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+
+    .draggable-header,
+    .draggable-header__button,
+    .draggable-header__button svg {
+      transition: none;
+    }
+
+    .draggable-header__button:active {
+      transform: none;
+    }
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 640px) {
+    .draggable-header {
+      --header-height: 48px;
+      --button-width: 56px;
+      padding: 0 8px;
+    }
+
+    .draggable-header__title {
+      font-size: 15px;
+    }
+
+    .draggable-header__area {
+      padding-left: 12px;
+    }
+  }
+
 }

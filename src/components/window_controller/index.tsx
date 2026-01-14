@@ -40,7 +40,7 @@ const DraggableHeader: React.FC<DraggableHeaderProps> = ({
   return (
     <div 
       ref={draggableRef}
-      className={`draggable-header ${className}`}
+      className={`draggable-header border-b-border-main border-b fixed w-screen ${className}`}
       data-tauri-drag-region
     >
       {/* Draggable area with title - THIS IS THE KEY FIX */}
@@ -82,7 +82,7 @@ const DraggableHeader: React.FC<DraggableHeaderProps> = ({
           </button>
           
           <button
-            className="draggable-header__button draggable-header__button--close"
+            className="draggable-header__button draggable-header__button--close "
             onClick={handleClose}
             title="Close"
             aria-label="Close window"

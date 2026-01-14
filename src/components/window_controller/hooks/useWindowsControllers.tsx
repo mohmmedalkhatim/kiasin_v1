@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { getCurrentWindow } from '@tauri-apps/api/window';
+import { invoke } from '@tauri-apps/api/core';
 
 interface UseWindowControlsProps {
     onClose?: () => void;
@@ -18,7 +19,7 @@ export const useWindowControls = ({
             onMinimize();
         } else {
             try {
-                await appWindow.minimize();
+                await invoke('window_control', { command: 'min' });
             } catch (error) {
                 console.error('Failed to minimize:', error);
             }
@@ -30,7 +31,7 @@ export const useWindowControls = ({
             onMaximize();
         } else {
             try {
-                await appWindow.toggleMaximize();
+                await invoke('window_control', { command: 'max' });
             } catch (error) {
                 console.error('Failed to toggle maximize:', error);
             }
@@ -42,7 +43,7 @@ export const useWindowControls = ({
             onClose();
         } else {
             try {
-                await appWindow.close();
+                await invoke('window_control', { command: 'close' });
             } catch (error) {
                 console.error('Failed to close:', error);
             }
