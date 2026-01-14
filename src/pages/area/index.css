@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+
+@layer components {
+    .area_container {
+        @apply min-w-full min-h-full
+    }
+}
