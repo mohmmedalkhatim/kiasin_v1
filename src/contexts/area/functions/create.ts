@@ -7,7 +7,7 @@ let create_area = createAsyncThunk('area', async () => {
     let channel = new Channel<Area[]>((state)=>{
         return state[0]
     })
-    invoke('areas_control', { command: 'create',channel })
+     await invoke('areas_control', { command: 'create',channel })
   } catch (err) {
     console.log('there is a problem creating an area: ', err)
   }
