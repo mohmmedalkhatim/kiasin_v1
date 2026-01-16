@@ -1,0 +1,8 @@
+@import "tailwindcss";
+@import "../../../../index.css";
+
+@layer components {
+    .card_container {
+        @apply border border-border-main rounded-sm shadow-md p-4;
+    }
+}
