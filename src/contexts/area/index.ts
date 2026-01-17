@@ -1,17 +1,31 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { create_area } from './functions/create'
 
 export interface Area {
-  items: any[]
+  id: number
+  name: string
+  description: string
+  structure: string
 }
-let init: Area = {
-  items: []
+export interface areas_storage {
+  loading: boolean  
+  areas: Area[]
+}
+
+let init: areas_storage = {
+  loading: false,
+  areas: []
 }
 
 let areas = createSlice({
   name: 'area',
   initialState: init,
   reducers: {},
-  extraReducers: builder => {}
-});
+  extraReducers: builder => {
+    builder.addCase(create_area.fulfilled, (state,action) => {
+    })
+    builder.addCase(create_area.pending, (state) => {})
+  }
+})
 
-export default areas.reducer;
+export default areas.reducer
