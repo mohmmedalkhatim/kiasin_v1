@@ -5,8 +5,8 @@ import { Area } from '..';
 export let create_area = createAsyncThunk(
   'area/create',
   async (payload: Area) => {
+    let res: Area | null = {} as Area;
     try {
-      let res: Area | null = null;
       let channel = new Channel<Area[]>(state => {
         res = state[0]
       })
@@ -16,11 +16,9 @@ export let create_area = createAsyncThunk(
       }).catch(err => {
         console.error('there is a problem invoking create_area: ', err)
       })
-      if (res) {
-        return res
-      }
     } catch (err) {
       console.error('there is a problem creating an area: ', err)
     }
+    return res
   }
 )

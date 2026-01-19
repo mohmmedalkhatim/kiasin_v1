@@ -2,14 +2,14 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { Area } from '..'
 import { Channel, invoke } from '@tauri-apps/api/core'
 
-export let retrieve = createAsyncThunk('area/retrieve', async () => {
+export let retrieve = createAsyncThunk('area/retrieve', async (id:number,api) => {
   try {
     let res: Area | null = null
     let channel = new Channel<Area[]>(state => {
       res = state[0]
     })
     invoke('areas_control', {
-      payload: { payload: { command: 'retrieve' } },
+      payload: { payload: { command: 'retrieve',id } },
       channel
     }).catch(err => {
       console.error('there is a problem invoking create_area: ', err)
@@ -18,6 +18,6 @@ export let retrieve = createAsyncThunk('area/retrieve', async () => {
       return res
     }
   } catch (err) {
-    console.error('there is a problem creating an area: ', err)
+    api.rejectWithValue('there is a problem retrieving an area: ' + err)
   }
 })
