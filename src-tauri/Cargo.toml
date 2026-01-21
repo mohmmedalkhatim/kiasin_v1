@@ -33,4 +33,5 @@ tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 tauri-plugin-fs = "2"
 tauri-plugin-sql = { version = "2", features = ["sqlite"] }
 tauri-plugin-store = "2"
+tauri-plugin-devtools = "2.0.1"
 
