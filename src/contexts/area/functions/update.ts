@@ -1,23 +1,41 @@
-import { createAsyncThunk } from '@reduxjs/toolkit'
-import { Area } from '..'
+import { ActionReducerMapBuilder, createAsyncThunk } from '@reduxjs/toolkit'
+import { Area, areas_storage } from '..'
 import { Channel, invoke } from '@tauri-apps/api/core'
 
-export let update_area = createAsyncThunk('area/update', async (id:number, api) => {
+export let update = createAsyncThunk('area/update', async (area:Area,api) => {
+  let res = {} as Area
   try {
-    let res: Area | null = null
     let channel = new Channel<Area[]>(state => {
       res = state[0]
     })
-    invoke('areas_control', {
-      payload: { payload: { command: 'retrieve',id  } },
+    await invoke('areas_control', {
+      payload: { payload: { command: 'update',area } },
       channel
     }).catch(err => {
-      api.rejectWithValue('there is a problem invoking create_area: ' + err)
+      console.error('there is a problem invoking create_area: ', err)
     })
-    if (res) {
-      return res
-    }
   } catch (err) {
-    api.rejectWithValue('there is a problem updating an area' + err)
+    api.rejectWithValue('there is a problem retrieving an area: ' + err)
   }
+  return res as Area
 })
+
+
+export let update_thunk_builder = (builder: ActionReducerMapBuilder<areas_storage>) => {
+  builder.addAsyncThunk(update, {
+    pending: state => {
+      state.status = 'loading'
+      state.loading = true
+    },
+    fulfilled: (state, action) => {
+      state.status = 'succeeded'
+      state.loading = false
+      state.list.push(action.payload)
+    },
+    rejected: state => {
+      state.status = 'failed'
+      state.loading = false
+      state.error = 'There was an error creating the area.'
+    }
+  })
+}
