@@ -1,9 +1,12 @@
-import { configureStore } from "@reduxjs/toolkit";
-
+import { configureStore, createActionCreatorInvariantMiddleware, Tuple } from '@reduxjs/toolkit'
+import AreaSlice from '../contexts/area'
 
 export let store = configureStore({
-    reducer: {}
+  reducer: {
+    area: AreaSlice
+  },
+
 })
 
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch

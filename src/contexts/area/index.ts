@@ -1,24 +1,36 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { create_area } from './functions/create'
+import { createSlice } from '@reduxjs/toolkit'
+import { create_thunk_builder } from './functions/create'
+import { update_thunk_builder } from './functions/update'
+import { retrieve_thunk_builder } from './functions/retrieve'
+import { delete_thunk_builder } from './functions/delete'
+import { list_thunk_builder } from './functions/list'
+
+export interface Card {
+  id: number
+  type: string
+  store: {}
+}
 
 export interface Area {
   id: number
   name: string
   description: string
-  structure: string
+  structure: { cards: Card[] }
 }
 export interface areas_storage {
-  loading: boolean;
-  error: string | null;
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
-  areas: Area[]
+  loading: boolean
+  error: string | null
+  active: Area
+  status: 'idle' | 'loading' | 'succeeded' | 'failed'
+  list: Area[]
 }
 
-let init: areas_storage = {
+export let init: areas_storage = {
   error: null,
   status: 'idle',
+  active: {} as Area,
   loading: false,
-  areas: []
+  list: []
 }
 
 let areas = createSlice({
@@ -26,21 +38,11 @@ let areas = createSlice({
   initialState: init,
   reducers: {},
   extraReducers: builder => {
-    builder.addCase(create_area.pending, (state,action) => {
-      state.status = 'loading'
-      state.loading = true
-
-    })
-    builder.addCase(create_area.fulfilled, (state,action) => {
-      state.status = 'succeeded'
-      state.loading = false
-      state.areas.push(action.payload)
-    })
-    builder.addCase(create_area.rejected, (state) => {
-      state.status = 'failed'
-      state.loading = false
-      state.error = 'There was an error creating the area.'
-    })
+    create_thunk_builder(builder)
+    update_thunk_builder(builder)
+    retrieve_thunk_builder(builder)
+    delete_thunk_builder(builder)
+    list_thunk_builder(builder)
   }
 })
 
