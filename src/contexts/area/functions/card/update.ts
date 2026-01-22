@@ -9,6 +9,6 @@ export let create_card = createAsyncThunk(
   (payload: { id: number; card: Card }, api) => {
     let { id, card } = payload
     let state = api.getState() as RootState
-    state.area.active.structure[id] = card
+    state.area.active.area.structure.cards[id] = card
   }
 )
