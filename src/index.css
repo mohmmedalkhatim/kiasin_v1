@@ -1,26 +1,6 @@
 @import 'tailwindcss';
 
 
-@layer components{
-    body{
-        background: var(--color-dark-900);
-    }
-    *{
-        @apply text-support-100
-    }
-    .app_container {
-        @apply absolute pl-19 pt-10 w-[calc(100%)] h-[calc(100%-2.5rem)] overflow-x-hidden;
-        scrollbar-gutter: left
-    }
-    .btn {
-        @apply px-4 py-2 rounded-md text-white font-medium transition;
-        background-color: var(--color-primary-600);
-    }
-    .btn:hover {
-        background-color: var(--color-primary-700);
-    }
-}
-
 @theme {
     /* =========================         Primary (Blue Brand)
          ========================= */
@@ -61,7 +41,7 @@
     --color-support-800: #656565;
     --color-support-900: #575757;
 
-    
+
     /* =========================
      waring (red / danger)
      ========================= */
@@ -77,4 +57,32 @@
     --color-danger-900: #9e0419;
 
     --color-border-main: #e2e2e220
+}
+
+@layer components {
+    body {
+        background: var(--color-dark-900);
+    }
+
+    .bg {
+        @apply bg-dark-50 dark:bg-dark-900;
+    }
+
+    * {
+        @apply text-support-100
+    }
+
+    .app_container {
+        @apply pl-19 pt-10 w-[calc(100%)] h-[calc(100%-2.5rem)] overflow-x-hidden;
+        scrollbar-gutter: left
+    }
+
+    .btn {
+        @apply px-4 py-2 rounded-md text-white font-medium transition;
+        background-color: var(--color-primary-600);
+    }
+
+    .btn:hover {
+        background-color: var(--color-primary-700);
+    }
 }

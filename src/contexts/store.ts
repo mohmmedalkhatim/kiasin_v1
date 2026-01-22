@@ -1,11 +1,12 @@
-import { configureStore, createActionCreatorInvariantMiddleware, Tuple } from '@reduxjs/toolkit'
-import AreaSlice from '../contexts/area'
+import { configureStore } from '@reduxjs/toolkit'
+import areas_slice from '../contexts/area'
+import database_slice from '../contexts/Databases'
 
 export let store = configureStore({
   reducer: {
-    area: AreaSlice
-  },
-
+    area: areas_slice,
+    database: database_slice
+  }
 })
 
 export type RootState = ReturnType<typeof store.getState>

@@ -6,10 +6,15 @@ import { delete_thunk_builder } from './functions/delete'
 import { list_thunk_builder } from './functions/list'
 
 export interface Card {
-  id: number
-  type: string
-  store: {}
+  id: number,
+  type: string,
+  store: {},
+  size:{
+    columns:number
+    rows:number
+  }
 }
+
 
 export interface Area {
   id: number
@@ -20,7 +25,7 @@ export interface Area {
 export interface areas_storage {
   loading: boolean
   error: string | null
-  active: Area
+  active: { edit: boolean; area: Area }
   status: 'idle' | 'loading' | 'succeeded' | 'failed'
   list: Area[]
 }
@@ -28,15 +33,19 @@ export interface areas_storage {
 export let init: areas_storage = {
   error: null,
   status: 'idle',
-  active: {} as Area,
+  active: { edit: false, area: {} as Area },
   loading: false,
   list: []
 }
 
-let areas = createSlice({
+export let areas = createSlice({
   name: 'area',
   initialState: init,
-  reducers: {},
+  reducers: {
+    toggle_editing (state) {
+      state.active.edit = !state.active.edit
+    }
+  },
   extraReducers: builder => {
     create_thunk_builder(builder)
     update_thunk_builder(builder)
