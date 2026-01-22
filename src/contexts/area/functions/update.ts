@@ -31,6 +31,7 @@ export let update_thunk_builder = (builder: ActionReducerMapBuilder<areas_storag
       state.status = 'succeeded'
       state.loading = false
       state.list.push(action.payload)
+      state.active.area = action.payload
     },
     rejected: state => {
       state.status = 'failed'
