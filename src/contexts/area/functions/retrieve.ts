@@ -5,18 +5,16 @@ import { Channel, invoke } from '@tauri-apps/api/core'
 export let retrieve = createAsyncThunk(
   'area/retrieve',
   async (id: number, api) => {
-    let res = {
-      structure: { cards: [{},{}, {}, {}] }
-    } as Area
+    let res = {} as Area
     try {
       let channel = new Channel<Area[]>(state => {
         res = state[0]
       })
       await invoke('areas_control', {
-        payload: { payload: { command: 'retrieve', id } },
+        payload: { command: 'retrieve',id },
         channel
       }).catch(err => {
-        console.error('there is a problem invoking create_area: ', err)
+        console.error('there is a problem invoking retrieve_area: ', err)
       })
     } catch (err) {
       api.rejectWithValue('there is a problem retrieving an area: ' + err)
@@ -36,7 +34,7 @@ export let retrieve_thunk_builder = (
     fulfilled: (state, action) => {
       state.status = 'succeeded'
       state.loading = false
-      state.active = action.payload
+      state.active.area = action.payload
     },
     rejected: state => {
       state.status = 'failed'
