@@ -1,26 +1,27 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { ActionCreatorWithPayload, createSlice } from '@reduxjs/toolkit'
 import { create_thunk_builder } from './functions/create'
 import { update_thunk_builder } from './functions/update'
 import { retrieve_thunk_builder } from './functions/retrieve'
 import { delete_thunk_builder } from './functions/delete'
 import { list_thunk_builder } from './functions/list'
+import { create_card_thunk_builder } from './functions/card/create'
+import { update_card_builder } from './functions/card/update'
 
 export interface Card {
-  id: number,
-  type: string,
-  store: {},
-  size:{
-    columns:number
-    rows:number
+  id: number
+  type: string
+  store: {}
+  size: {
+    columns: number
+    rows: number
   }
 }
-
 
 export interface Area {
   id: number
   name: string
   description: string
-  structure: { cards: Card[] }
+  structure: { cards: Card[],dense:boolean }
 }
 export interface areas_storage {
   loading: boolean
@@ -41,17 +42,22 @@ export let init: areas_storage = {
 export let areas = createSlice({
   name: 'area',
   initialState: init,
-  reducers: {
-    toggle_editing (state) {
+  reducers: (cre) => ({
+    toggle_editing: state => {
       state.active.edit = !state.active.edit
+    },
+    update_card_order (state, action) {
+      state.active.area.structure.cards =structuredClone(action.payload)
     }
-  },
+  }),
   extraReducers: builder => {
     create_thunk_builder(builder)
     update_thunk_builder(builder)
+    create_card_thunk_builder(builder)
     retrieve_thunk_builder(builder)
     delete_thunk_builder(builder)
     list_thunk_builder(builder)
+    update_card_builder(builder)
   }
 })
 

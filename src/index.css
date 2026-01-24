@@ -73,7 +73,7 @@
     }
 
     .app_container {
-        @apply pl-19 pt-10 w-[calc(100%)] h-[calc(100%-2.5rem)] overflow-x-hidden;
+        @apply pl-19 top-10  w-[calc(100%)] min-h-[calc(100%-2.5rem)] overflow-x-hidden;
         scrollbar-gutter: left
     }
 
