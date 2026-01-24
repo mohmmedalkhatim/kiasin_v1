@@ -5,7 +5,7 @@ import { load } from '@tauri-apps/plugin-store'
 
 export let create_area_async_function = createAsyncThunk(
   'area/create',
-  async (_) => {
+  async _ => {
     let res: Area | null = {} as Area
     try {
       let channel = new Channel<Area[]>(state => {
@@ -21,11 +21,14 @@ export let create_area_async_function = createAsyncThunk(
       let list = await store.get<number[]>('list')
       if (list) {
         list.push(res.id)
-        console.info(list)
         await store.set('list', list)
         await store.save()
-      }else{
-        store.set("list",[])
+      } else {
+        await store.set('list', [])
+        let list = await store.get<number[]>('list')
+        if (list) {
+          list.push(res.id)
+        }
         store.save()
       }
     } catch (err) {
