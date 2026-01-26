@@ -6,7 +6,7 @@ pub struct Area {
     pub id: Option<i32>,
     pub name: Option<String>,
     pub description: Option<String>,
-    pub structures: Option<Value>,
+    pub structure: Option<Value>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

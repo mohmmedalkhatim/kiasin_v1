@@ -1,6 +1,7 @@
 use chrono::Local;
 use migration::schema::area::{ActiveModel, Entity, Model};
 use sea_orm::{prelude::*, ActiveValue::Set};
+use serde_json::json;
 
 use super::retrieve_area;
 
@@ -9,8 +10,8 @@ pub async fn create_area(db: &DatabaseConnection) -> Result<Vec<Model>, String> 
     let model = ActiveModel {
         name: Set(Some("New Area".to_string())),
         description: Set(None),
-        structure: Set(None),
-        created_at: Set(date),
+        structure: Set(Some(json!({"cards":[],"dense":false}))),
+        created: Set(date),
         ..Default::default()
     };
     let id = Entity::insert(model)
