@@ -68,11 +68,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
     const variantClasses: Record<InputVariant, string> = {
       default:
-        "border-border-main focus:border-blue-500 focus:ring-blue-500",
+        "border-border-main focus:border-primary-500",
       error:
-        "border-red-500 focus:border-red-500 focus:ring-red-500",
+        "border-red-500 focus:border-red-500 focus:border-red-500",
       success:
-        "border-green-500 focus:border-green-500 focus:ring-green-500",
+        "border-green-500 focus:border-green-500 focus:border-green-500",
     };
 
     const inputClasses = twMerge(
