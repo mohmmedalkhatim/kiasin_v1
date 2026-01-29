@@ -2,6 +2,7 @@ import {
   IconCalendarEvent,
   IconDashboard,
   IconDatabase,
+  IconForms,
   IconLayersIntersect,
   IconNotes,
   IconSettings,
@@ -11,8 +12,8 @@ import Page from './link';
 function Links() {
   const arr = [
     { name: 'dashboard', link: '/', Icon: <IconDashboard size={"1.5rem"}/> },
-    { name: 'Databases', link: '/databases', Icon: <IconDatabase size={"1.5rem"} /> },
-    { name: 'Events', link: '/events', Icon: <IconCalendarEvent size={"1.5rem"} /> },
+    { name: 'databases', link: '/databases', Icon: <IconDatabase size={"1.5rem"} /> },
+    { name: 'Form builder', link: '/form_builder', Icon: <IconForms size={"1.5rem"} /> },
     { name: 'areas', link: '/areas', Icon: <IconLayersIntersect size={"1.5rem"}/> },
     { name: 'notes', link: '/notes', Icon: <IconNotes size={"1.5rem"} /> },
   ];

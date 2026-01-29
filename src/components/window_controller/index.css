@@ -8,16 +8,16 @@
     --button-width: 48px;
     --transition-speed: 0.2s;
     --border-radius: 8px 8px 0 0;
-    @apply bg-support-400 dark:bg-dark-900 text-support-900 dark:text-support-100;
-    padding: 0;;
+    @apply bg-support-400 dark:bg-dark-900 fixed text-support-900 dark:text-support-100;
+    padding: 0;
+    ;
     display: flex;
+    width: calc(100vw - 0.92rem);
     justify-content: space-between;
     align-items: center;
     height: var(--header-height);
     user-select: none;
     -webkit-app-region: no-drag;
-    
-    position: relative;
     z-index: 10000;
     border-bottom: 1px solid var(--border-color);
     box-shadow: 0 1px 3px var(--shadow-color);

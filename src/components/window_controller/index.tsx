@@ -40,7 +40,7 @@ const DraggableHeader: React.FC<DraggableHeaderProps> = ({
   return (
     <div 
       ref={draggableRef}
-      className={`draggable-header z-100 border-b-border-main border-b fixed w-screen ${className}`}
+      className={`draggable-header z-100 border-b-border-main border-b fixed ${className}`}
       data-tauri-drag-region
     >
       {/* Draggable area with title - THIS IS THE KEY FIX */}

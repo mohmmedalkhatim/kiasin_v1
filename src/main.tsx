@@ -15,12 +15,13 @@ import Database from '@tauri-apps/plugin-sql';
 
 export let DB: Database;
 
+let root = document.getElementById("root") as HTMLElement
 
 (async () => {
   DB =  await Database.load(`sqlite:Database/test.db`);
 })()
 
-const lenis = new Lenis();
+const lenis = new Lenis({});
 
 export const storage = load("event.json");
 
@@ -37,7 +38,7 @@ gsap.ticker.lagSmoothing(0);
 gsap.registerPlugin(ScrollTrigger);
 
 
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+ReactDOM.createRoot(root).render(
   <React.StrictMode>
     <Provider store={store}>
       <RouterProvider router={router} />
