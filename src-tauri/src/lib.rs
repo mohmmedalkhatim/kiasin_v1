@@ -1,13 +1,18 @@
+use app::*;
 use app::{structures::DbConnection, util::database_connection};
 use migration::{self, MigratorTrait};
+use std::sync::Arc;
 use tauri::{path::BaseDirectory, Manager};
 use tokio::sync::Mutex;
-use std::sync::Arc;
 mod app;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub async fn run() {
-    let builder = tauri::Builder::default()
+    #[cfg(debug_assertions)] // only enable instrumentation in development builds
+    let devtools = tauri_plugin_devtools::init();
+
+    let mut builder = tauri::Builder::default()
+        .plugin(tauri_plugin_store::Builder::new().build())
         .plugin(tauri_plugin_sql::Builder::new().build())
         .plugin(tauri_plugin_fs::init())
         .plugin(tauri_plugin_opener::init())
@@ -33,14 +38,21 @@ pub async fn run() {
             tauri::async_runtime::spawn(async move {
                 shadow.lock().await.db =
                     Some(database_connection(database_url.display().to_string()).await);
-                let _ = migration::Migrator::up(&shadow.lock().await.db.clone().unwrap(), None)
-                    .await;
+                let _ =
+                    migration::Migrator::up(&shadow.lock().await.db.clone().unwrap(), None).await;
             });
             app.manage(database);
 
             Ok(())
         });
-        builder.invoke_handler(tauri::generate_handler![])
+    #[cfg(debug_assertions)]
+    {
+        builder = builder.plugin(devtools);
+    }
+
+
+    builder
+        .invoke_handler(tauri::generate_handler![window_control, areas_control])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
