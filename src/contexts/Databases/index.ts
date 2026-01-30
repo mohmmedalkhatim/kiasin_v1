@@ -1,12 +1,23 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit'
+import { create_table_thunk_builder } from './functions/create'
 
-export interface databases_storage {
-
+type TableInfo = {
+  columns: string[]
 }
-let init:databases_storage = {}
+export interface databases_storage {
+  tablesInfo: TableInfo[]
+}
+let init: databases_storage = {
+  tablesInfo: []
+}
 
 let databases = createSlice({
-    name:"databases",
-    initialState:init,
-    reducers:{}
+  name: 'databases',
+  initialState: init,
+  reducers: {},
+  extraReducers:(builder)=>{
+    create_table_thunk_builder(builder)
+  }
 })
+
+export default databases.reducer

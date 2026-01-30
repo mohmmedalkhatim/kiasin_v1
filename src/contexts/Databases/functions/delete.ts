@@ -1,4 +1,4 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 
-export let create_table = createAsyncThunk("database/create",async ()=>{})
+export let create_table = createAsyncThunk("database/delete",async ()=>{})
