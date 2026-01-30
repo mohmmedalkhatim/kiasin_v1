@@ -9,7 +9,8 @@ import { create_card } from "../../../../contexts/area/functions/card/create"
 import { areas, Card } from "../../../../contexts/area"
 import { useAsync } from "react-use"
 import { update } from "../../../../contexts/area/functions/update"
-
+import { Popover } from "../popover"
+import { IconGrid3x3 } from "@tabler/icons-react"
 
 
 function Aside() {
@@ -42,9 +43,11 @@ function Aside() {
       }
     }
   }
+  let create_card_action = (type: string) => dispatch(create_card({ type }))
+  let [popOverStatus, setPopOverStatus] = useState(false)
 
   return (
-    <aside className="fixed p-3 pb-5 top-0 flex flex-col justify-between right-0 mt-28 h-[calc(100vh-7rem)] w-72 z-30 border-border-main border-l bg">
+    <aside className="fixed  p-3 pb-5 top-0 flex flex-col justify-between right-0 mt-28 h-[calc(100vh-7rem)] w-72 z-30 border-border-main border-l bg">
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
@@ -53,13 +56,24 @@ function Aside() {
           items={structure.cards}
           strategy={verticalListSortingStrategy}
         >
-          <div className="gap-2 flex flex-col">
+          <div className="gap-2 flex flex-col overflow-x-auto gutter">
             {items.map((item) => <DraggableCard id={item.id} />)}
           </div>
           <DragOverlay />
         </SortableContext>
       </DndContext>
-      <Button onClick={() => dispatch(create_card({ type: "form" }))}>create</Button>
+      <Popover open={popOverStatus}>
+        <Popover.Item onSelect={() => dispatch(create_card({ type: "areas_links" }))}>
+          <IconGrid3x3 />
+        </Popover.Item>
+        <Popover.Item onSelect={() => dispatch(create_card({ type: "form" }))}>
+          <IconGrid3x3 />
+        </Popover.Item>
+        <Popover.Item onSelect={() => dispatch(create_card({ type: "value" }))}>
+          <IconGrid3x3 />
+        </Popover.Item>
+      </Popover>
+      <Button onClick={() => setPopOverStatus(!popOverStatus)}>create</Button>
     </aside>
   )
 }
