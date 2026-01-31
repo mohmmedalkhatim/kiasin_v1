@@ -4,7 +4,7 @@ import { useEffect } from "react"
 import { list } from "../../../contexts/area/functions/list"
 import AreaLink from "./area_link"
 import "./index.css"
-import Header from "../components/header"
+import Header from "../../../components/header"
 import Button from "../../../components/Button"
 import { create_area_async_function } from "../../../contexts/area/functions/create"
 

@@ -1,18 +1,61 @@
-import Header from "./components/header"
+import { retrieve } from "../../contexts/area/functions/retrieve"
+import { AppDispatch, RootState } from "../../contexts/store"
 import CardContainer from "./containers/card_container"
-import Content from "./containers/card_container/content"
+import { useDispatch, useSelector } from "react-redux"
+import CardContent from "./components/CardContent"
 import MainGrid from "./containers/main_gird"
+import { useParams } from "react-router-dom"
+import Aside from "./components/aside"
+import { useAsync, useToggle } from "react-use"
+import { useEffect } from "react"
+import { AnimatePresence, motion } from "motion/react"
+import { update } from "../../contexts/area/functions/update"
 import "./index.css"
+import AreaHeader from "./Header"
+
 function Area() {
-  return (
-    <div className="area_container">
-      <Header />
-      <MainGrid>
-        <CardContainer columns={2} rows={1}>
-          <Content card_type="areas" />
-        </CardContainer>
-      </MainGrid>
-    </div>
-  )
+  let { id } = useParams()
+  let dispatch = useDispatch<AppDispatch>()
+  let { edit, area } = useSelector((state: RootState) => state.area.active)
+  let loading = useSelector((state: RootState) => state.area.loading)
+  let [denseState, denseToggle] = useToggle(false)
+  useEffect(() => {
+    if (area.id !== Number(id)) {
+      dispatch(retrieve(Number(id)))
+    }
+  }, [])
+  useAsync(async () => {
+    if (area.structure && !loading) {
+      dispatch(update(area))
+    }
+  }, [area])
+
+  if (area.structure && !loading) {
+    return (
+      <main className="area_container relative">
+        <AreaHeader dense={denseState} denseToggle={denseToggle}/>
+        <MainGrid dense={denseState}>
+          {area.structure.cards.map((item) => {
+            return (
+              <CardContainer key={JSON.stringify(item)} columns={item.size.columns} rows={item.size.rows} id={item.id as never}>
+                <CardContent type={item.type} id={item.id} />
+              </CardContainer>
+            )
+          })}
+        </MainGrid>
+        <AnimatePresence initial={false}>
+          {edit ? (
+            <motion.div
+              initial={{ opacity: 0, }}
+              animate={{ opacity: 1, }}
+              exit={{ opacity: 0, }}
+            >
+              <Aside />
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
+      </main>
+    )
+  }
 }
 export default Area
