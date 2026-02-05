@@ -48,6 +48,9 @@ export let areas = createSlice({
     },
     update_card_order (state, action) {
       state.active.area.structure.cards =structuredClone(action.payload)
+    },
+    update_active(state,action){
+      state.active.area = action.payload
     }
   }),
   extraReducers: builder => {

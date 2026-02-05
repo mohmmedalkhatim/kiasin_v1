@@ -9,10 +9,10 @@ export let update = createAsyncThunk('area/update', async (area: Area, api) => {
       res = state[0]
     })
     await invoke('areas_control', {
-      payload: { command: 'update', item:area },
+      payload: { command: 'update', item: area },
       channel
     }).catch(err => {
-      console.error('there is a problem invoking create_area: ', err)
+      console.error('there is a problem invoking update: ', err)
     })
   } catch (err) {
     api.rejectWithValue('there is a problem retrieving an area: ' + err)
@@ -29,6 +29,7 @@ export let update_thunk_builder = (
     },
     fulfilled: (state, action) => {
       state.status = 'succeeded'
+      state.active.area = action.meta.arg
     },
     rejected: state => {
       state.status = 'failed'
