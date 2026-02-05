@@ -6,10 +6,9 @@ import CardContent from "./components/CardContent"
 import MainGrid from "./containers/main_gird"
 import { useParams } from "react-router-dom"
 import Aside from "./components/aside"
-import { useAsync, useToggle } from "react-use"
-import { useEffect } from "react"
+import { useAsync } from "react-use"
+import { useState } from "react"
 import { AnimatePresence, motion } from "motion/react"
-import { update } from "../../contexts/area/functions/update"
 import "./index.css"
 import AreaHeader from "./Header"
 
@@ -18,22 +17,20 @@ function Area() {
   let dispatch = useDispatch<AppDispatch>()
   let { edit, area } = useSelector((state: RootState) => state.area.active)
   let loading = useSelector((state: RootState) => state.area.loading)
-  let [denseState, denseToggle] = useToggle(false)
-  useEffect(() => {
+  let [denseState, setDense] = useState(false)
+  useAsync(async () => {
     if (area.id !== Number(id)) {
       dispatch(retrieve(Number(id)))
+    } else {
+      setDense(area.structure.dense)
     }
-  }, [])
-  useAsync(async () => {
-    if (area.structure && !loading) {
-      dispatch(update(area))
-    }
-  }, [area])
+  }, [area.structure])
 
-  if (area.structure && !loading) {
+
+  if (area.id === Number(id)) {
     return (
       <main className="area_container relative">
-        <AreaHeader dense={denseState} denseToggle={denseToggle}/>
+        <AreaHeader setDense={setDense} />
         <MainGrid dense={denseState}>
           {area.structure.cards.map((item) => {
             return (

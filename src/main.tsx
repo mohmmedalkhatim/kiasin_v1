@@ -18,7 +18,16 @@ export let DB: Database;
 let root = document.getElementById("root") as HTMLElement
 
 (async () => {
-  DB =  await Database.load(`sqlite:Database/test.db`);
+  DB = await Database.load(`sqlite:Database/test.db`);
+  if (DB) {
+    ReactDOM.createRoot(root).render(
+      <React.StrictMode>
+        <Provider store={store}>
+          <RouterProvider router={router} />
+        </Provider>
+      </React.StrictMode>,
+    );
+  }
 })()
 
 const lenis = new Lenis({});
@@ -37,11 +46,3 @@ gsap.ticker.lagSmoothing(0);
 
 gsap.registerPlugin(ScrollTrigger);
 
-
-ReactDOM.createRoot(root).render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
-  </React.StrictMode>,
-);
