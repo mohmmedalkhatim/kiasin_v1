@@ -4,12 +4,14 @@ import { databases_storage } from '..'
 
 export let create_table = createAsyncThunk(
   'database/create',
-  async (table: { name: string; values: string[][] }) => {
+  async (table: { name: string; values: string[][] }, api) => {
     let values = ''
     table.values.map(items => {
       values += items[0] + ' ' + items[1] + ','
     })
-   return await DB.execute(`CREATE TABLE ${table.name}(${values}) `)
+    return DB.execute(`CREATE TABLE ${table.name}(${values}) `).catch(e => {
+      api.rejectWithValue(e)
+    })
   }
 )
 
@@ -17,10 +19,13 @@ export let create_table_thunk_builder = (
   builder: ActionReducerMapBuilder<databases_storage>
 ) => {
   builder.addAsyncThunk(create_table, {
-    pending: state => {},
+    pending: (state,action) => {
+      state.loading = true,
+      state.status = "pending"
+    },
     fulfilled: (state, action) => {
-      console.log("creating")
-      console.log(action.payload)
+      state.loading = false
+      state.status = "fullfilled"
     },
     rejected: state => {}
   })
