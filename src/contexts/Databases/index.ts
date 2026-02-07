@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { create_table_thunk_builder } from './functions/create'
-import { rowInfo, tableInfo } from './objects'
+import { rowInfo } from './objects'
 import { retrieve_table_thunk_builder } from './functions/retiveve'
 
 export interface databases_storage {
@@ -12,6 +12,7 @@ export interface databases_storage {
   status: string
   loading: boolean
 }
+
 let init: databases_storage = {
   active: {
     tableInfo: [],

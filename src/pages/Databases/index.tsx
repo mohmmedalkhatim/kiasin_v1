@@ -16,19 +16,19 @@ function Databases() {
     let dispatch = useDispatch<AppDispatch>()
     useAsync(async () => {
         dispatch(database_info(active))
-    },[active])
+    }, [active])
     return (
         <>
             <Header >
                 <div className="flex justify-between w-full py-4">
-                    <Input className="w-[18rem] border-0 outline-0" value={"hello"} />
+                    <Input className="w-[18rem] border-0 outline-0" value={active} />
                     <Button className="text-xs" size="sm">new record</Button>
                 </div>
             </Header>
-            <main className="content mt-0 p-0 relative">
-                <div className="flex w-full ">
-                    <DatabasesList setActive={setActive} />
-                    <TableScreen active={active} />
+            <main className=" mt-0 p-0  relative flex w-screen">
+                <DatabasesList setActive={setActive} />
+                <div className="flex w-full relative pr-15 pl-64">
+                    <TableScreen />
                 </div>
             </main>
 

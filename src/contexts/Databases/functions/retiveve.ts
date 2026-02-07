@@ -24,6 +24,7 @@ export let retrieve_table_thunk_builder = (
       state.loading = false;
       state.status = 'fulfilled'
       state.active.tableInfo = action.payload
+      state.active.tableName = action.meta.arg
       
     },
     rejected: state => {}
