@@ -2,8 +2,8 @@ import ColumnHead from "../ColumnHead"
 
 function Fields({ list }: { list: string[] }) {
   return (
-    <div className="flex items-center border border-[#e2e2e220] rounded-t-md">
-      {list.map(name => (<ColumnHead name={name}/>))}
+    <div className="grid items-center rounded-t-md border-b-2 border-border-main" style={{gridTemplateColumns:`repeat(${list.length},minmax(0,1fr))`}}>
+      {list.map(name => (<ColumnHead key={name} name={name}/>))}
     </div>
   )
 }
