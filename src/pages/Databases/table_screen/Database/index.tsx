@@ -5,34 +5,33 @@ import Header from "./components/Header";
 import Record from "./components/Record";
 import "./style.css"
 import { IconPlus } from "@tabler/icons-react";
-import Button from "../../../../components/Button";
-import Input from "../../../../components/input";
+import { AppDispatch, RootState } from "../../../../contexts/store";
+import { useDispatch, useSelector } from "react-redux";
+import { database_info } from "../../../../contexts/Databases/functions/retiveve";
+import { useAsync } from "react-use";
 
-function Database({name}:{name:string}) {
-    const [DataB, setDataB] = useState<DatabaseType>();
-    let one = useDatabase(state => state.findOne);
-    useEffect(() => {
-        one(String(name), setDataB)
+
+function Database({ name }: { name: string }) {
+    let active = useSelector((state: RootState) => state.database.active)
+    let dispatch = useDispatch<AppDispatch>()
+    useAsync(async () => {
+        dispatch(database_info(name))
     }, [name])
-    if (DataB) {
-        console.log(DataB.data)
+    if (active.tableInfo && name) {
         return (
             <>
                 <main className="flex flex-col items-center">
-                    <div className="flex justify-between w-full px-4 py-4">
-                        <Input className="w-[18rem] border-0 outline-0" value={DataB.name} />
-                        <Button className="text-xs" size="sm">new record</Button>
-                    </div>
-                    <div className="w-full flex flex-col max-w-full overflow-x-auto">
-                        <Fields list={[...DataB.info.map(val => val.name)]} />
-                        <Record DB={DataB} />
-                        <div className=" flex py-2 hover:bg-[#e2e2e210] w-full border border-t-0 border-[#e2e2e220] items-center justify-center">
+                    <div className="w-full flex flex-col max-w-full overflow-x-auto mt-4 border-y border-l border-border-main" >
+                        <Fields list={active.tableInfo.map(item => item.name)} />
+                        <Record name={active.tableName} info={active.tableInfo.map(item => item.name)} />
+                        <div className=" flex py-2 hover:bg-[#e2e2e210] w-full items-center border-r border-border-main justify-center ">
                             <div className="flex items-center gap-2 text-[#e2e2e240]">
                                 <IconPlus size={"1rem"} />
                             </div>
                         </div>
                     </div>
-                </main></>
+                </main>
+            </>
         )
     }
 }
