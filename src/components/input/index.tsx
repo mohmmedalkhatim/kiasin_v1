@@ -1,139 +1,275 @@
-import React, { forwardRef, useId, ChangeEvent } from "react";
-import { twMerge } from "tailwind-merge";
-import clsx from "clsx";
+// Input.tsx
+import React, {
+  forwardRef,
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  useRef
+} from 'react';
+import {
+  IconX,
+  IconEye,
+  IconEyeOff,
+  IconSearch,
+  IconLoader2,
+  IconAlertCircle,
+  IconCheck,
+  IconMail,
+  IconLock,
+  IconPhone
+} from '@tabler/icons-react';
 
-type InputSize = "sm" | "md" | "lg";
-type InputVariant = "default" | "error" | "success";
+export type InputSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+export type InputVariant = 'default' | 'filled' | 'underline';
+export type InputType =
+  | 'text'
+  | 'email'
+  | 'password'
+  | 'number'
+  | 'tel'
+  | 'url'
+  | 'search'
+  | 'date'
+  | 'time';
 
 export interface InputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {
-  label?: string;
-  description?: string;
-  errorMessage?: string;
-
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   size?: InputSize;
   variant?: InputVariant;
-
-  startAdornment?: React.ReactNode;
-  endAdornment?: React.ReactNode;
-
-  containerClassName?: string;
+  type?: InputType;
+  label?: string;
+  helperText?: string;
+  error?: string;
+  success?: string;
+  warning?: string;
+  fullWidth?: boolean;
+  leftSection?: React.ReactNode;
+  rightSection?: React.ReactNode;
+  leftSectionWidth?: number;
+  rightSectionWidth?: number;
+  clearable?: boolean;
+  debounceDelay?: number;
+  loading?: boolean;
+  withCount?: boolean;
+  radius?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  wrapperClassName?: string;
+  inputWrapperClassName?: string;
   inputClassName?: string;
-
-  onValueChange?: (value: string) => void;
+  onClear?: () => void;
 }
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(
+const Input = forwardRef<HTMLInputElement, InputProps>(
   (
     {
+      size = 'md',
+      variant = 'default',
+      type = 'text',
       label,
-      description,
-      errorMessage,
-
-      size = "md",
-      variant = "default",
-
-      startAdornment,
-      endAdornment,
-
-      containerClassName,
-      inputClassName,
-
+      helperText,
+      error,
+      success,
+      warning,
       disabled,
-      required,
-      id,
-
+      fullWidth,
+      leftSection,
+      rightSection,
+      leftSectionWidth = 40,
+      rightSectionWidth = 40,
+      clearable,
+      debounceDelay = 0,
+      loading,
+      withCount,
+      radius = 'sm',
+      wrapperClassName,
+      inputWrapperClassName,
+      inputClassName,
+      value,
+      defaultValue,
       onChange,
-      onValueChange,
-      ...rest
+      onClear,
+      ...props
     },
     ref
   ) => {
-    const generatedId = useId();
-    const inputId = id ?? generatedId;
+    const inputRef = useRef<HTMLInputElement>(null);
+    const timeoutRef = useRef<ReturnType<typeof setTimeout>| undefined>(undefined);
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-      onChange?.(e);
-      onValueChange?.(e.target.value);
+    const [internalValue, setInternalValue] = useState(
+      value ?? defaultValue ?? ''
+    );
+    const [showPassword, setShowPassword] = useState(false);
+
+    const isControlled = value !== undefined;
+    const currentValue = isControlled ? value : internalValue;
+
+    useEffect(() => {
+      if (!isControlled) return;
+      setInternalValue(String(value ?? ''));
+    }, [value, isControlled]);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (!isControlled) {
+        setInternalValue(e.target.value);
+      }
+
+      if (debounceDelay > 0) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = setTimeout(() => onChange?.(e), debounceDelay);
+      } else {
+        onChange?.(e);
+      }
     };
 
-    const baseInputClasses =
-      "w-full rounded-sm border bg border-border-main place-holder:text-support-100 focus:outline-none focus:ring-1 transition";
-
-    const sizeClasses: Record<InputSize, string> = {
-      sm: "h-8 px-2 text-sm",
-      md: "h-10 px-3 text-sm",
-      lg: "h-12 px-4 text-base",
+    const handleClear = () => {
+      if (!isControlled) setInternalValue('');
+      onClear?.();
+      inputRef.current?.focus();
     };
 
-    const variantClasses: Record<InputVariant, string> = {
-      default:
-        "border-border-main focus:border-primary-500",
-      error:
-        "border-red-500 focus:border-red-500 focus:border-red-500",
-      success:
-        "border-green-500 focus:border-green-500 focus:border-green-500",
-    };
+    const isPassword = type === 'password';
+    const resolvedType =
+      isPassword && showPassword ? 'text' : type;
 
-    const inputClasses = twMerge(
-      clsx(
-        baseInputClasses,
-        sizeClasses[size],
-        variantClasses[variant],
-        disabled && "bg text-gray-500 cursor-not-allowed",
-        startAdornment && "pl-9",
-        endAdornment && "pr-9"
-      ),
-      inputClassName
+    const defaultLeftIcon = useMemo(() => {
+      if (leftSection) return leftSection;
+      if (type === 'email') return <IconMail size={18} />;
+      if (type === 'password') return <IconLock size={18} />;
+      if (type === 'search') return <IconSearch size={18} />;
+      if (type === 'tel') return <IconPhone size={18} />;
+      return null;
+    }, [type, leftSection]);
+
+    const inputPaddingStyle = useMemo(
+      () => ({
+        paddingLeft: defaultLeftIcon ? leftSectionWidth : undefined,
+        paddingRight:
+          rightSection || clearable || isPassword || loading
+            ? rightSectionWidth
+            : undefined
+      }),
+      [
+        defaultLeftIcon,
+        rightSection,
+        clearable,
+        isPassword,
+        loading,
+        leftSectionWidth,
+        rightSectionWidth
+      ]
     );
 
+    const sizeClasses = {
+      xs: 'h-7 text-xs',
+      sm: 'h-8 text-sm',
+      md: 'h-9 text-sm',
+      lg: 'h-10 text-base',
+      xl: 'h-12 text-lg'
+    }[size];
+
+    const radiusClasses = {
+      xs: 'rounded-xs',
+      sm: 'rounded-sm',
+      md: 'rounded-md',
+      lg: 'rounded-lg',
+      xl: 'rounded-xl'
+    }[radius];
+
+    const variantClasses = disabled
+      ? 'border-gray-200 text-gray-400'
+      : error
+      ? 'border-red-500 focus:ring-red-500'
+      : success
+      ? 'border-green-500 focus:ring-green-500'
+      : warning
+      ? 'border-yellow-500 focus:ring-yellow-500'
+      : variant === 'filled'
+      ? 'bg-gray-50 focus:bg-white'
+      : variant === 'underline'
+      ? 'border-x-0 border-t-0 border-b-2 border-border-main rounded-none'
+      : 'bg border-border-main px-2';
+
     return (
-      <div className={twMerge("flex flex-col gap-1", containerClassName)}>
+      <div className={wrapperClassName}>
         {label && (
-          <label
-            htmlFor={inputId}
-            className="text-sm font-medium"
-          >
+          <label className="block mb-1 text-sm font-medium">
             {label}
-            {required && <span className="text-red-500"> *</span>}
           </label>
         )}
 
-        <div className="relative">
-          {startAdornment && (
-            <span className="absolute inset-y-0 left-3 flex items-center ">
-              {startAdornment}
-            </span>
+        <div
+          className={`relative ${fullWidth ? 'w-full' : ''} ${inputWrapperClassName}`}
+        >
+          {defaultLeftIcon && (
+            <div
+              className="absolute left-0 inset-y-0 flex items-center justify-center "
+              style={{ width: leftSectionWidth }}
+            >
+              {defaultLeftIcon}
+            </div>
           )}
 
           <input
-            {...rest}
-            ref={ref}
-            id={inputId}
+            ref={(node) => {
+              inputRef.current = node;
+              if (typeof ref === 'function') ref(node);
+              else if (ref) ref.current = node;
+            }}
+            type={resolvedType}
+            value={currentValue}
             disabled={disabled}
-            required={required}
-            aria-invalid={variant === "error"}
             onChange={handleChange}
-            className={inputClasses}
+            style={inputPaddingStyle}
+            className={`
+              w-full border outline-none transition
+              ${sizeClasses}
+              ${radiusClasses}
+              ${variantClasses}
+              ${inputClassName}
+            `}
+            {...props}
           />
 
-          {endAdornment && (
-            <span className="absolute inset-y-0 right-3 flex items-center text-gray-400">
-              {endAdornment}
-            </span>
-          )}
+          <div
+            className="absolute right-0 inset-y-0 flex items-center justify-center gap-1"
+            style={{ width: rightSectionWidth }}
+          >
+            {loading && <IconLoader2 className="animate-spin" size={16} />}
+            {error && <IconAlertCircle size={16} />}
+            {success && <IconCheck size={16} />}
+
+            {clearable && currentValue && !loading && (
+              <button type="button" onClick={handleClear}>
+                <IconX size={16} />
+              </button>
+            )}
+
+            {isPassword && (
+              <button
+                type="button"
+                onClick={() => setShowPassword((p) => !p)}
+              >
+                {showPassword ? (
+                  <IconEyeOff size={16} />
+                ) : (
+                  <IconEye size={16} />
+                )}
+              </button>
+            )}
+
+            {rightSection}
+          </div>
         </div>
 
-        {description && !errorMessage && (
-          <p className="text-xs text-gray-500">{description}</p>
-        )}
-
-        {errorMessage && (
-          <p className="text-xs text-red-600">{errorMessage}</p>
+        {(error || helperText) && (
+          <p className={`mt-1 text-sm ${error ? 'text-red-600' : 'text-gray-500'}`}>
+            {error || helperText}
+          </p>
         )}
       </div>
     );
   }
 );
 
-Input.displayName = "Input";
+Input.displayName = 'Input';
+export default Input;

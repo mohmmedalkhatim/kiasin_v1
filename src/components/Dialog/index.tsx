@@ -42,7 +42,6 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(
             panelClassName,
             headerClassName,
             bodyClassName,
-            footerClassName,
         },
         ref
     ) => {

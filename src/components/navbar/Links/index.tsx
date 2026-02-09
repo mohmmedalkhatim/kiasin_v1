@@ -1,5 +1,4 @@
 import {
-  IconCalendarEvent,
   IconDashboard,
   IconDatabase,
   IconForms,
