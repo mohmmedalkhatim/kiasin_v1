@@ -1,11 +1,9 @@
 import {
-  Action,
   ActionReducerMapBuilder,
   createAsyncThunk
 } from '@reduxjs/toolkit'
 import { RootState } from '../../../store'
 import { areas_storage, Card } from '../..'
-import { update } from '../update'
 
 export let update_card = createAsyncThunk(
   'area/update_card',
