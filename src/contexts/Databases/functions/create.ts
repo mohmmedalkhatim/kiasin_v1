@@ -19,14 +19,14 @@ export let create_table_thunk_builder = (
   builder: ActionReducerMapBuilder<databases_storage>
 ) => {
   builder.addAsyncThunk(create_table, {
-    pending: (state,action) => {
+    pending: (state) => {
       state.loading = true,
       state.status = "pending"
     },
-    fulfilled: (state, action) => {
+    fulfilled: (state) => {
       state.loading = false
       state.status = "fullfilled"
     },
-    rejected: state => {}
+    rejected: (_) => {}
   })
 }

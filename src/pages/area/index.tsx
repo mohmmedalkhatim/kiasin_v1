@@ -16,7 +16,6 @@ function Area() {
   let { id } = useParams()
   let dispatch = useDispatch<AppDispatch>()
   let { edit, area } = useSelector((state: RootState) => state.area.active)
-  let loading = useSelector((state: RootState) => state.area.loading)
   let [denseState, setDense] = useState(false)
   useAsync(async () => {
     if (area.id !== Number(id)) {

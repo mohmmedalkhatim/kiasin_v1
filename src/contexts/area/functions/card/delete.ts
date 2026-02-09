@@ -1,7 +1,6 @@
 import { ActionReducerMapBuilder, createAsyncThunk } from '@reduxjs/toolkit'
 import { RootState } from '../../../store'
 import { areas_storage } from '../..'
-import { a, area } from 'motion/react-client'
 
 export let delete_card = createAsyncThunk(
   'area/delete_card',
@@ -9,7 +8,7 @@ export let delete_card = createAsyncThunk(
     let { id } = payload
     let state = api.getState() as RootState
     let { structure } = state.area.active.area
-    let filtered_cards = structure.cards.filter((item, index) => index !== id)
+    let filtered_cards = structure.cards.filter((_, index) => index !== id)
     console.log(structure)
     console.log(filtered_cards)
     let area = structuredClone(state.area.active.area)
