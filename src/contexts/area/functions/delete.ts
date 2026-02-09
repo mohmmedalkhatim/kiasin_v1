@@ -27,7 +27,7 @@ export let delete_thunk_builder = (builder: ActionReducerMapBuilder<areas_storag
       state.status = 'loading'
       state.loading = true
     },
-    fulfilled: (state, action) => {
+    fulfilled: (state) => {
       state.status = 'succeeded'
       state.loading = false
     },

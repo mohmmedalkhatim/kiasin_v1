@@ -1,5 +1,4 @@
 import { useCallback } from 'react';
-import { getCurrentWindow } from '@tauri-apps/api/window';
 import { invoke } from '@tauri-apps/api/core';
 
 interface UseWindowControlsProps {
@@ -13,7 +12,6 @@ export const useWindowControls = ({
     onMinimize,
     onMaximize
 }: UseWindowControlsProps = {}) => {
-    const appWindow = getCurrentWindow();
     const handleMinimize = useCallback(async () => {
         if (onMinimize) {
             onMinimize();

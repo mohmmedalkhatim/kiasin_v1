@@ -1,4 +1,4 @@
-import { ActionCreatorWithPayload, createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import { create_thunk_builder } from './functions/create'
 import { update_thunk_builder } from './functions/update'
 import { retrieve_thunk_builder } from './functions/retrieve'
@@ -42,7 +42,7 @@ export let init: areas_storage = {
 export let areas = createSlice({
   name: 'area',
   initialState: init,
-  reducers: (cre) => ({
+  reducers: (_) => ({
     toggle_editing: state => {
       state.active.edit = !state.active.edit
     },
