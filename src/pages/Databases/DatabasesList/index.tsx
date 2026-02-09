@@ -1,10 +1,9 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import DbCard from "../DbCard"
 import Button from "../../../components/Button"
-import { Input } from "../../../components/input"
+import Input  from "../../../components/input"
 import CreateTableDialog from "./create_table_dialog"
 import { DB } from "../../../main"
-import { useAsync } from "react-use"
 
 type DatabasesListProps = {
     setActive: Dispatch<SetStateAction<string>>

@@ -1,6 +1,6 @@
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from '@dnd-kit/utilities'
-import { IconDots, IconGridDots } from "@tabler/icons-react";
+import {  IconGridDots } from "@tabler/icons-react";
 
 function DraggableCard({ id }: { id: number }) {
     let {

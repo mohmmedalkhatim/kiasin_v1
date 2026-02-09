@@ -1,7 +1,4 @@
-import { useParams } from "react-router-dom"
-import { useEffect, useState } from "react"
 import Fields from "./components/Feilds";
-import Header from "./components/Header";
 import Record from "./components/Record";
 import "./style.css"
 import { IconPlus } from "@tabler/icons-react";

@@ -1,5 +1,5 @@
 import { Dialog } from "../../../../components/Dialog"
-import { Input } from "../../../../components/input"
+import Input from "../../../../components/input"
 import { Select, SelectItem } from "../../../../components/select"
 
 function CreateTableDialog({open,setOpen}:{open:boolean,setOpen:any}) {
