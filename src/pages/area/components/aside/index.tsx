@@ -3,7 +3,7 @@ import { AppDispatch, RootState } from "../../../../contexts/store"
 import { closestCenter, DndContext, DragEndEvent, DragOverlay, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import DraggableCard from "./DraggableCard"
-import {  useState } from "react"
+import { useState } from "react"
 import { areas, Card } from "../../../../contexts/area"
 import { useAsync } from "react-use"
 import { update } from "../../../../contexts/area/functions/update"
@@ -32,10 +32,8 @@ function Aside() {
     if (over) {
       if (active.id !== over.id) {
         setItems((items) => {
-          const oldIndex = items.indexOf(items.find(item => item.id == Number(active.id)) as Card);
-          const newIndex = items.indexOf(items.find(item => item.id == Number(over.id)) as Card);
-          console.log(arrayMove(items, oldIndex, newIndex))
-          return arrayMove(items, oldIndex, newIndex);
+          let filtered = structuredClone(arrayMove(items, Number(active.id), Number(over.id)))
+          return filtered;
         });
       }
     }
@@ -53,12 +51,12 @@ function Aside() {
             strategy={verticalListSortingStrategy}
           >
             <div className="gap-2 flex flex-col overflow-x-auto gutter">
-              {items.map((item) => <DraggableCard id={item.id} />)}
+              {items.map((item, i) => <DraggableCard card={item} id={i} />)}
             </div>
             <DragOverlay />
           </SortableContext>
         </DndContext>
-        <Popover/>
+        <Popover />
       </aside>
     </>
   )

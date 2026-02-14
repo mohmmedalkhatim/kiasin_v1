@@ -21,7 +21,7 @@ export interface Area {
   id: number
   name: string
   description: string
-  structure: { cards: Card[],dense:boolean }
+  structure: { cards: Card[]; dense: boolean }
 }
 export interface areas_storage {
   loading: boolean
@@ -42,14 +42,14 @@ export let init: areas_storage = {
 export let areas = createSlice({
   name: 'area',
   initialState: init,
-  reducers: (_) => ({
+  reducers: _ => ({
     toggle_editing: state => {
       state.active.edit = !state.active.edit
     },
     update_card_order (state, action) {
-      state.active.area.structure.cards =structuredClone(action.payload)
+      state.active.area.structure.cards = structuredClone(action.payload)
     },
-    update_active(state,action){
+    update_active (state, action) {
       state.active.area = action.payload
     }
   }),
