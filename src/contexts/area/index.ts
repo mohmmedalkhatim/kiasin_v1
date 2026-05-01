@@ -9,8 +9,8 @@ import { update_card_builder } from './functions/card/update'
 
 export interface Card {
   id: number
-  type: string
-  store: {}
+  type: 'areas' | 'value' | 'form'
+  store: { list: undefined | number[] }
   size: {
     columns: number
     rows: number

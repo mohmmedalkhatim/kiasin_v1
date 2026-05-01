@@ -1,7 +1,7 @@
 import AreasLinkList from "../../cards/area_link_list"
 
 
-function CardContent({ id,type }: { id:number,type: string }) {
+function CardContent({ id,type }: { id:number,type: "areas" | "value" | "form" }) {
     let cards = new Map()
     cards.set("form", <div>form</div>)
     cards.set("areas_links", <AreasLinkList id={id}/>)

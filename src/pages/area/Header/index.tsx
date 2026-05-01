@@ -14,8 +14,7 @@ function AreaHeader({ setDense }: headerProps) {
     let { area } = useSelector((state: RootState) => state.area.active)
     let dispatch = useDispatch<AppDispatch>()
     let name = useSelector((state: RootState) => state.area.active.area.name)
-
-    return (
+    return (<>
         <Header className="bg">
             <div>{name}</div>
             <div className="flex items-center gap-2">
@@ -51,6 +50,8 @@ function AreaHeader({ setDense }: headerProps) {
                 </HeaderAction>
             </div>
         </Header>
+        
+    </>
     )
 }
 export default AreaHeader

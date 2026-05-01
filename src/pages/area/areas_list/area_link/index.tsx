@@ -1,17 +1,26 @@
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
+import { AppDispatch, RootState } from "../../../../contexts/store"
+import { list as List } from "../../../../contexts/area/functions/list"
 
 type Props = {
-    name: string,
     id: number
 }
 
-function AreaLink({name,id }: Props) {
+function AreaLink({ id }: Props) {
+  let dispatch = useDispatch<AppDispatch>()
+  useEffect(() => {
+    dispatch(List())
+  }, [])
+
+  let area = useSelector((state: RootState) => state.area.list).find(item=>item.id == id)
     return (
-        <Link to={`/area/${id}`} className="area_link  border-border-main ">
+        <Link to={`/area/${id}`} viewTransition className="area_link  border-border-main ">
             <div>
             </div>
             <div className="w-full border-t border-border-main p-3">
-                {name}
+                {area?.name}
             </div>
         </Link>
     )
