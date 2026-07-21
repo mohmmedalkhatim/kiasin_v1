@@ -21,5 +21,5 @@ pub async fn create_area(db: &DatabaseConnection) -> Result<Vec<Model>, String> 
         .last_insert_id;
     let area = retrieve_area(id, db).await?;
 
-    Ok(area)
+    Ok(vec![area])
 }

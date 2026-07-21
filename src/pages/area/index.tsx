@@ -11,20 +11,21 @@ import { useState } from "react"
 import { AnimatePresence, motion } from "motion/react"
 import "./index.css"
 import AreaHeader from "./Header"
+import { update } from "../../contexts/area/functions/update"
 
 function Area() {
   let { id } = useParams()
   let dispatch = useDispatch<AppDispatch>()
   let { edit, area } = useSelector((state: RootState) => state.area.active)
   let [denseState, setDense] = useState(false)
+  let [signle,setSignle] = useState()
   useAsync(async () => {
     if (area.id !== Number(id)) {
       dispatch(retrieve(Number(id)))
     } else {
       setDense(area.structure.dense)
     }
-  }, [area.structure])
-
+  }, [area.structure])  
 
   if (area.id === Number(id)) {
     return (

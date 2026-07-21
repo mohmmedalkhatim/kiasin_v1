@@ -11,8 +11,6 @@ export let update = createAsyncThunk('area/update', async (area: Area, api) => {
     await invoke('areas_control', {
       payload: { command: 'update', item: area },
       channel
-    }).catch(err => {
-      console.error('there is a problem invoking update: ', err)
     })
   } catch (err) {
     api.rejectWithValue('there is a problem retrieving an area: ' + err)

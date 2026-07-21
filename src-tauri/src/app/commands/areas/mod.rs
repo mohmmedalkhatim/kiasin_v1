@@ -4,8 +4,7 @@ use functions::retrieve_area;
 use migration::schema::area::Model;
 use objects::Payload;
 use std::sync::Arc;
-use tauri::{ipc::Channel, AppHandle, State};
-use tauri_plugin_store::StoreBuilder;
+use tauri::{ipc::Channel, State};
 use tokio::sync::Mutex;
 
 use crate::app::structures::DbConnection;
@@ -13,7 +12,6 @@ use crate::app::structures::DbConnection;
 #[tauri::command]
 pub async fn areas_control(
     payload: Payload,
-    manager: AppHandle,
     db: State<'_, Arc<Mutex<DbConnection>>>,
     channel: Channel<Vec<Model>>,
 ) -> Result<(), String> {
@@ -27,7 +25,7 @@ pub async fn areas_control(
         "retrieve" => match payload.id {
             Some(id) => {
                 let v = retrieve_area(id.clone(), &db).await?;
-                let _ = channel.send(v);
+                let _ = channel.send(vec![v]);
                 Ok(())
             }
             None => Err("you didn't add a payload item".to_string()),
@@ -42,25 +40,32 @@ pub async fn areas_control(
         "delete" => match payload.id {
             Some(id) => {
                 let _ = functions::delete_area(id, &db).await?;
+                let _ = channel.send(Vec::new());
                 Ok(())
             }
             None => Err("you didn't add a payload item".to_string()),
         },
         "list" => {
-            let store = StoreBuilder::new(&manager, "main.json").build().map_err(|e| e.to_string())?;
-            let list = store.get("list");
-            if let Some(list) = list {
-                let list: Vec<i32> =
-                    serde_json::from_value(list.clone()).map_err(|e| e.to_string())?;
-                let mut areas: Vec<Model> = vec![];
-                for id in list {
-                    let mut area = retrieve_area(id, &db).await?;
-                    areas.append(&mut area);
-                }
-                let _ = channel.send(areas);
-            }
+            let list = functions::list(&db).await?;
+            let _ = channel.send(list);
             Ok(())
+        },
+        "find_by_ids" => {
+            match payload.ids{
+                Some(list)=>{
+                    let mut res: Vec<Model> = Vec::new();
+                    for item in list{
+                        let v = retrieve_area(item.clone(), &db).await?;
+                        res.push(v);
+                    }
+                    let _ = channel.send(res);
+                    Ok(())
+                },
+                None=>{
+                    Err("you have to add an ids list".to_string())
+                }
+            }
         }
-        _ => Err("Invalid payload.item.unwrap().id command".to_string()),
+        _ => Err("Invalid payload command".to_string()),
     }
 }

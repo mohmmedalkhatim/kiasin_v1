@@ -3,11 +3,13 @@ import "./App.css";
 import WindowControls from "./components/window_controller";
 import Navbar from "./components/navbar";
 import { useEffect } from "react";
+import excel, { Workbook } from "exceljs"
 
 function App() {
-  useEffect(()=>{
-    
-  },[])
+  useEffect(() => {
+   let work = new Workbook()
+   work.csv.read("")
+  }, [])
   return (
     <main className="bg-dark-900 min-h-screen ">
       <WindowControls title="kiasin" />

@@ -1,13 +1,13 @@
 import { ActionReducerMapBuilder, createAsyncThunk } from '@reduxjs/toolkit'
 import { Area, areas_storage } from '..'
 import { Channel, invoke } from '@tauri-apps/api/core'
+import { Dispatch, SetStateAction } from 'react'
 
-export let list = createAsyncThunk('area/list', async () => {
+export let list = createAsyncThunk('area/list', async function(setAreas:Dispatch<SetStateAction<Area[]>>,api) {
   let res = [] as Area[]
   try {
     let channel = new Channel<Area[]>(state => {
-      res = state
-      console.log(state)
+      setAreas(state)
     })
     await invoke('areas_control', {
       payload: { command:"list" },
@@ -16,6 +16,7 @@ export let list = createAsyncThunk('area/list', async () => {
       console.error('there is a problem invoking create_area: ', err)
     })
   } catch (err) {
+    api.rejectWithValue("error creating ")
     console.error("there an error with the code: ",err)
   }
   return res as Area[]

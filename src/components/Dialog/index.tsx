@@ -16,7 +16,7 @@ interface DialogProps {
     description?: string;
 
     children: ReactNode;
-
+    widthClass:string
     closeOnOverlayClick?: boolean;
 
     overlayClassName?: string;
@@ -37,7 +37,7 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(
             children,
 
             closeOnOverlayClick = true,
-
+            widthClass,
             overlayClassName,
             panelClassName,
             headerClassName,
@@ -125,8 +125,9 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(
                     tabIndex={-1}
                     className={twMerge(
                         clsx(
-                            "bg rounded-lg shadow-sm w-full border border-border-main max-w-lg outline-none",
+                            "bg rounded shadow-sm border border-border-main outline-none",
                             "flex flex-col",
+                            widthClass,
                             panelClassName
                         )
                     )}

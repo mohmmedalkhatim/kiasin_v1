@@ -1,7 +1,6 @@
 import { ActionReducerMapBuilder, createAsyncThunk } from '@reduxjs/toolkit'
 import { Channel, invoke } from '@tauri-apps/api/core'
 import { Area, areas_storage } from '..'
-import { load } from '@tauri-apps/plugin-store'
 
 export let create_area_async_function = createAsyncThunk(
   'area/create',
@@ -17,20 +16,7 @@ export let create_area_async_function = createAsyncThunk(
       }).catch(err => {
         console.error('there is a problem invoking create_area: ', err)
       })
-      let store = await load('main.json')
-      let list = await store.get<number[]>('list')
-      if (list) {
-        list.push(res.id)
-        await store.set('list', list)
-        await store.save()
-      } else {
-        await store.set('list', [])
-        let list = await store.get<number[]>('list')
-        if (list) {
-          list.push(res.id)
-        }
-        store.save()
-      }
+
     } catch (err) {
       console.error('there is a problem creating an area: ', err)
     }

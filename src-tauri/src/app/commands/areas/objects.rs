@@ -13,5 +13,6 @@ pub struct Area {
 pub struct Payload {
     pub command: String,
     pub item: Option<Area>,
+    pub ids: Option<Vec<i32>>,
     pub id: Option<i32>,
 }

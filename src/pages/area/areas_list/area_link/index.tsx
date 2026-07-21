@@ -1,28 +1,35 @@
-import { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
 import { Link } from "react-router-dom"
-import { AppDispatch, RootState } from "../../../../contexts/store"
-import { list as List } from "../../../../contexts/area/functions/list"
+import { AppDispatch } from "../../../../contexts/store"
+import { IconTrash } from "@tabler/icons-react"
+import { delete_area } from "../../../../contexts/area/functions/delete"
+import { retrieve } from "../../../../contexts/area/functions/retrieve"
+import { Area } from "../../../../contexts/area"
 
 type Props = {
-    id: number
+    area: Area
 }
 
-function AreaLink({ id }: Props) {
-  let dispatch = useDispatch<AppDispatch>()
-  useEffect(() => {
-    dispatch(List())
-  }, [])
+function AreaLink({ area }: Props) {
+    let dispatch = useDispatch<AppDispatch>()
 
-  let area = useSelector((state: RootState) => state.area.list).find(item=>item.id == id)
     return (
-        <Link to={`/area/${id}`} viewTransition className="area_link  border-border-main ">
-            <div>
+        <div className="area_link  border-border-main ">
+
+            <Link to={`/area/${area.id}`} viewTransition className="w-full h-full grow">
+                <div className=""></div>
+            </Link>
+            <div className="w-full border-t border-border-main p-3 flex items-center justify-between">
+                <Link to={`/area/${area.id}`} viewTransition>
+                    <div className="">{area?.name}</div>
+                </Link>
+                <div onClick={() => dispatch(delete_area(area.id))}>
+                    <IconTrash size={"1rem"} />
+                </div>
             </div>
-            <div className="w-full border-t border-border-main p-3">
-                {area?.name}
-            </div>
-        </Link>
+
+        </div>
     )
 }
 export default AreaLink

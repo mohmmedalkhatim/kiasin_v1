@@ -1,8 +1,7 @@
 import { createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
 import Area from "../pages/area";
 import App from "../App";
-import AreasList from "../pages/area/areas_list";
-import Databases from "../pages/Databases";
+import Databases from "../pages/sheets";
 import MainPage from "../pages/main";
 
 

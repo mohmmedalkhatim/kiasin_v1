@@ -10,14 +10,14 @@ let create_card_state = ({
   rows = 1
 }: {
   id: number
-  type: string
+  type: 'areas' | 'value' | 'form'
   columns?: number
   rows?: number
 }): Card => {
   return {
     id,
     type,
-    store: {},
+    store: { list: [] },
     size: {
       columns,
       rows
@@ -31,7 +31,7 @@ export let create_card = createAsyncThunk(
       type,
       columns = 1,
       rows = 1
-    }: { type: string; columns?: number; rows?: number },
+    }: { type: "areas" | "value" | "form"; columns?: number; rows?: number },
     api
   ) => {
     let { area } = api.getState() as RootState

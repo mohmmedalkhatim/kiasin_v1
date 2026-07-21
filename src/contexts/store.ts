@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import areas_slice from '../contexts/area'
-import database_slice from '../contexts/Databases'
+import database_slice from './sheets'
 
 export let store = configureStore({
   reducer: {

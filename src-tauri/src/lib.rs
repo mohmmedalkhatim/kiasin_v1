@@ -52,7 +52,7 @@ pub async fn run() {
 
 
     builder
-        .invoke_handler(tauri::generate_handler![window_control, areas_control])
+        .invoke_handler(tauri::generate_handler![window_control, areas_control,sheets_control])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

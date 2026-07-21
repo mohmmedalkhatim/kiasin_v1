@@ -3,8 +3,10 @@ import { RootState } from "../../../../contexts/store"
 import { IconLayersIntersect } from "@tabler/icons-react"
 import AreasList from "../../areas_list"
 
+
 function AreasLinkList({ id }: { id: number }) {
     let card = useSelector((root: RootState) => root.area.active.area.structure.cards)[id]
+
 
     if (card.type) {
         return (
@@ -16,7 +18,7 @@ function AreasLinkList({ id }: { id: number }) {
                     </div>
                 </header>
                 <div className="">
-                    <AreasList list={card.store.list || []}/>
+                    <AreasList list={card.store.list || []} />
                 </div>
             </div>
         )
