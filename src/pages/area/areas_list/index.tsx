@@ -9,10 +9,9 @@ import { useDispatch } from "react-redux"
 import { list as List } from "../../../contexts/area/functions/list"
 
 
-function AreasList({ list }: { list?: number[]  }) {
-  let [areas, setAreas] = useState<Area[]>([])
-  let dispatch = useDispatch<AppDispatch>()
-
+function AreasList({ list,reload }: { list?: number[],reload:boolean  }) {
+  const [areas, setAreas] = useState<Area[]>([])
+  const dispatch = useDispatch<AppDispatch>()
   useAsync(async () => {
     try {
       if (list) {
@@ -27,7 +26,7 @@ function AreasList({ list }: { list?: number[]  }) {
     } catch (err) {
       console.error(err)
     }
-  }, [])
+  }, [reload])
   return (
     <>
       <div className="p-4 pt-22">

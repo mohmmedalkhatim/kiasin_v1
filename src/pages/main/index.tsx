@@ -9,14 +9,16 @@ import { AppDispatch } from "../../contexts/store"
 function MainPage() {
 
     let dispatch = useDispatch<AppDispatch>()
+      const [signle,setSignle] = useState(true)
+
 
     return (
         <div>
             <Header  >
-                <div>Areas</div>
-                <Button onClick={() => dispatch(create_area_async_function())}>create</Button>
+                <div>Areas{signle}</div>
+                <Button onClick={() => {setSignle(!signle); dispatch(create_area_async_function())}}>create</Button>
             </Header>
-            <AreasList />
+            <AreasList reload={signle}/>
         </div>
     )
 }

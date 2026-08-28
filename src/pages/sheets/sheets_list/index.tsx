@@ -14,24 +14,23 @@ type DatabasesListProps = {
 
 function SheetList({ setActive }: DatabasesListProps) {
     const [open, setOpen] = useState(false)
-    const [tables, setTables] = useState<string[]>([])
+    const [Sheets, setSheets] = useState<string[]>([])
     useAsync( async () => {
         let channel = new Channel((res:Sheet[])=>{
             let names = res.map(item=>item.name)
-            setTables(names)
+            setSheets(names)
         })
         await invoke("sheet_control",{payload:{command:"list"},channel})
     }, [])
-    if (tables.length != 0) {
         return (
             <>
-                <div className="flex flex-1 flex-col border-r w-[16rem] z-10 max-h-[calc(100vh-2.5rem)] bg fixed min-h-[calc(100vh-2.5rem)]  pt-18  border-[#e2e2e220]">
+                <div className="flex flex-1 flex-col border-r w-[18rem] z-10 max-h-[calc(100vh-2.5rem)] bg fixed min-h-[calc(100vh-2.5rem)]  pt-18  border-[#e2e2e220]">
                     <div className="border-b border-[#e2e2e220] p-3 w-full">
                         <Input placeholder="search for data" ></Input>
                     </div>
                     <div className="bg-[#e2e2e206] overflow-auto h-full grow">
                         <div className="flex flex-col gap-2 p-2 m-3">
-                            {tables.map(item => {
+                            {Sheets.map(item => {
                                 return (<SheetCard key={item} onClick={() => setActive(item)} name={item} />)
                             })}
                         </div>
@@ -43,6 +42,5 @@ function SheetList({ setActive }: DatabasesListProps) {
                 <CreateTableDialog open={open} setOpen={setOpen} />
             </>
         )
-    }
 }
 export default SheetList

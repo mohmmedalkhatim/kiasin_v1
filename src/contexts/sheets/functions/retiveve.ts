@@ -1,14 +1,16 @@
 import { ActionReducerMapBuilder, createAsyncThunk } from '@reduxjs/toolkit'
 import { DB } from '../../../main'
 import { databases_storage } from '..'
-import { invoke } from '@tauri-apps/api/core'
+import { Channel, invoke } from '@tauri-apps/api/core'
+import { Sheet } from '../objects'
 
 export let sheet_data = createAsyncThunk(
   'sheet/data',
-  async (name: string) => {
-    let info  = {}
-    invoke("sheets_control")
-    return info
+  async (id: number,) => {
+    let channel = new Channel<Sheet>((res)=>{
+
+    })
+    invoke("sheets_control",{payload:{command:"retrieve",id}})
   }
 )
 

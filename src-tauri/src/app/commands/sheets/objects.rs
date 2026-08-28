@@ -6,7 +6,7 @@ pub struct Sheet {
     pub name: Option<String>,
     pub description: Option<String>,
     pub file: Option<String>,
-    pub created: String,
+    pub created: Option<String>,
     pub updated: Option<String>,
 }
 
